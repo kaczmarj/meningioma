@@ -1,13 +1,42 @@
 # Meningioma
 
-[http://openneu.ro/metasearch/](http://openneu.ro/metasearch/)
+How accurately can we detect meningiomas?
 
-Questions
+Data on [Open Neuroimaging Laboratory](http://openneu.ro/metasearch/)
+
+Look into
 ---------
 
-1. Should pre-process the data, or can we convert the NIFTI images to Numpy arrays and work with those?
-  - If we should pre-process, what is the general workflow for that?
-1. How could we annotate where in the brain the meningioma exists? (i.e. how could we create training data for supervised learning?)
-1. Do all scans involve a contrast agent?
-1. Are there any Python packages I should look into other than scikit-learn?
-1. We get different results if we resize the image. Should we use the original image size?
+- Literature search
+  1. What have people done in tumor segementation?
+
+- Segmentation algorithms
+  1. Ants segmentation tool
+  1. FAST (FSL tool)
+  1. Slicer segmentation tool
+  1. SPM segmentation tool
+  1. ITK-SNAP
+  1. SIFT
+
+- Clustering
+  1. scikit-learn
+
+
+Similarity matrix: gives you an array of values that indicates the similarities
+of your inputs. Similar to a covariance matrix.
+
+Cosine similarity uses some distance metric (e.g., euclidian, manhattan, etc.)
+
+Manifold will give you clusters (hopefully).
+
+t-SNE: http://distill.pub/2016/misread-tsne/
+
+silhouette coefficient (score) gives you sense of whether or not there is a
+good amount of clustering in your outputs.
+
+Look at Greg's post on Slack.
+
+Good slice: case_005_2
+
+
+Clemens: consider a searchlight approach. The meningioma should have less variability than other parts of the brain, so the searchlight could locate part of the tumor, and then region-growing could discover the rest.

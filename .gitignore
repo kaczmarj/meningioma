@@ -1,7 +1,16 @@
 .DS_Store
-
-# Compiled Python code
 *.pyc
-
-# Jupyter Notebook checkpoints
 *.ipynb_checkpoints
+*.nii.gz
+*.pdf
+*.mrml
+*.seg.nnrd
+
+# Folders with data
+ants_templates
+brain_extraction
+data
+segmentation
+
+# jupyter notebooks from project week
+project_week/*.ipynb

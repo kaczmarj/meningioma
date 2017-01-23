@@ -1,0 +1,102 @@
+https://www.na-mic.org/Wiki/index.php/2016_Winter_Project_Week
+
+Look into mocha.jl, tensorflow, theano, caffe, etc ...
+
+Also look into the Nvidia DGX-1. Supercomputer in a box...
+
+Fun exercise would be to train neural network to identify models of cars.
+
+Introduction to deep learning on Amazon?
+
+DURING PROJECT WEEK, THEY WILL USE IMAGE SEGMENTATION ON MRI DATA. 3 hours.
+  - outline how to organize data, etc.
+  - sounds like the hardest part is organizing the training data.
+    - and finding enough labeled data.
+  - segmentation example (to pick out left ventricle).
+
+Go to developer.nvidia.com/deep-learning
+
+
+# Introduction to Deep Learning
+
+NVIDIA - December 20, 2016 at 10 a.m.
+(Look into NVIDIA's healthcare team)
+
+Think of deep learning (convolution neural networks) as a universal algorithm.
+
+Algorithms, data, and computing power came together in the early 2000s to make
+high-powered deep learning possible. Now, there is data everywhere.
+
+- ARTIFICIAL INTELLIGENCE
+    (perception, reasoning, planning)
+  - MACHINE LEARNING
+    (optimization, computational statistics, (un)supervised learning)
+    - DEEP LEARNING
+      (neural networks, distributed representations, hierarchical explanatory
+      factors, unsupervised feature engineering)
+
+Deep learning success:
+
+1. Imagenet challenge (object classification and localization in images).
+
+2. Cancer screening mitosis detection. (Ciresan et al., 2013)
+
+3. Classification attention models (places.csail.mit.edu)
+
+4. Scene segmentation and classification (Farabet, PAMI, 2013) and
+    (Ciresan et al., IDSIA 2012 'Neuronal membrane segmentation')
+
+READ: Special Issue on Deep Learning in Medical Imaging:
+      IEEE Transaction on Medical Imaging, Vol 35, No 5, May 2016
+
+Interesting application of deep learning: recognize baseball fields in Google
+Maps satellite images, and build search index.
+
+Organized EMRs in bar charts (an image), and fed those images into deep learning
+algorithm. Got a nice prediction of mortality.
+  (Children's hospital Los Angeles, GTC 2016)
+
+
+In the Imagenet challenge, deep learning solutions were entered starting in
+2012 and were consistently better than traditional computer vision approaches.
+
+
+Artificial neural networks
+--------------------------
+
+FEED-FORWARD: (1-D)
+Inputs feed-forward to outputs. Between input layer and output layer are hidden
+layers. A sequence (layers) of neurons with many-to-many connections.
+
+CONVOLUTION NEURAL NETWORK: (2-D)
+A collection of simple, trainable mathematical units that collectively learn
+complex functions. In the center of the network we have feature extraction and
+dimensionality reduction. At the end we have classification.
+
+
+What is a convolution? A dimensionality reduction technique.
+Dot product in two dimensions?
+A convolution kernal is a feature.
+
+A convolution example: Sobel filter (Sobel operator). Try to apply Sobel filter
+to MRI data?
+
+Pooling? A dimensionality reduction technique.
+Sliding a window around an array and taking the max value from each window.
+
+
+Deep neural networks: generalized feature extraction
+if you input an image of a face, neural network can identify low-level features,
+then mid-level features (e.g. eyes), and finally high-level features (faces).
+
+You use neural networks for feature extraction, but what about classification?
+This would take about 30 GPU days to train, but now it would take about 1 day.
+
+GoogleNet was 2014 Imagenet winner. Used 21 convolution layers.
+Microsoft ResNet was 2015 Imagenet winner. 152 convolution layers. Could not go
+more than 152 because they ran out of memory on the machine.
+
+What is a GFLOP?
+
+NVIDIA Learning SDKs:
+  cuDNN, TensorRT, DeepStream SDK, cuBLAS, cuSPARSE, NCCL.

@@ -10,8 +10,10 @@ N. Title
   1. A generative model for brain tumor segmentation in multi-modal images (Menze et al., 2010)
     - Automatic
     - Method
-      - Model healthy brain, then model tumor state. Apply probabilities that each voxel is tumor.
-      - .
+      - Use priors to determine each voxel's probability of being a certain tissue class (white matter, gray matter, and CSF) in each imaging modality; then estimate each voxel's probability of being tumor or not, using some unknown parameters. A separate algorithm estimates the unknown parameters using the Maximum Likelihood method.
+    - Results
+    - Notes
+      - Could not find code implementation online. Trying to implement in Python.
 
 1. Level-set evolution with region competition: automatic 3-d segmentation of brain tumors (Ho et al., 2002)
   - Automatic

@@ -11,7 +11,7 @@ def make_X_y():
 
     subj = 'case_005_2'
 
-    PATH = op.join('om', 'user', 'jakubk', 'meningioma')
+    PATH = op.join('/', 'om', 'user', 'jakubk', 'meningioma')
     SAVE_PATH = op.join(PATH, 'tsne_output')
 
     # Load original scan and FAST segmentation

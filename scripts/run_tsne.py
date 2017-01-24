@@ -3,8 +3,7 @@ import os.path as op
 from nipype import Node, Function, IdentityInterface, Workflow
 
 def make_X_y():
-    """Return arrays X and y to be used in t-SNE. Also return name with which
-    to save t-SNE output."""
+    """Return arrays X and y to be used in t-SNE. Also return the subj ID."""
     from os import path as op
     import nibabel as nib
     import numpy as np
@@ -14,7 +13,6 @@ def make_X_y():
 
     PATH = op.join('om', 'user', 'jakubk', 'meningioma')
     SAVE_PATH = op.join(PATH, 'tsne_output')
-    save_fname = op.join(SAVE_PATH, "{}_{}_{}".format(subj, perp, l_rate))
 
     # Load original scan and FAST segmentation
     brain = nib.load(op.join(PATH, 'data', '{}.nii.gz'.format(subj)))
@@ -33,15 +31,16 @@ def make_X_y():
     y = s_slice.flatten().astype(np.int32)
 
     # Similarity matrix. But does Laplacian Kernel return similarity matrix?
-    return pairwise.laplacian_kernel(X), y, save_fname
+    return pairwise.laplacian_kernel(X), y, subj
 
 
-def run_tsne(X, y, perp, l_rate, fname):
+def run_tsne(X, y, perp, l_rate, subj):
     """Run t-SNE on X and save 2D scatter plot and t-SNE output."""
     import numpy as np
     import matplotlib.pyplot as plt
     import seaborn as sns
     from sklearn.manifold import TSNE
+    fname = op.join(SAVE_PATH, "{}_{}_{}".format(subj, perp, l_rate))
     # Run t-SNE. This takes the longest (about 2 hours?)
     X_tsne = TSNE(perplexity=perp, learning_rate=l_rate, n_iter=5000).fit_transform(X)
 
@@ -64,12 +63,12 @@ infosource.iterables = [('perp_iter', [20, 30, 50]),
 
 # Function node to create X and y arrays.
 X_y = Node(Function(input_names=[],
-                    output_names=['X', 'y', 'fname'],
+                    output_names=['X', 'y', 'subj'],
                     function=make_X_y),
            name='X_y')
 
 # Function node to run t-SNE and save scatter plot and t-SNE output.
-tsne = Node(Function(input_names=['X', 'y', 'perp', 'l_rate', 'fname'],
+tsne = Node(Function(input_names=['X', 'y', 'perp', 'l_rate', 'subj'],
                      output_names=[],
                      function=run_tsne),
             name='tsne')
@@ -78,5 +77,5 @@ tsne = Node(Function(input_names=['X', 'y', 'perp', 'l_rate', 'fname'],
 base_dir = op.join('/', 'om', 'scratch', 'Tue', 'jakub')
 wf = Workflow(name='wf', base_dir=base_dir)
 wf.connect([(infosource, tsne, [('perp_iter', 'perp'), ('l_rate_iter', 'l_rate')]),
-            (X_y, tsne, [('X', 'X'), ('y', 'y'), ('fname', 'fname')])])
+            (X_y, tsne, [('X', 'X'), ('y', 'y'), ('subj', 'subj')])])
 wf.run(plugin='SLURM', plugin_args={'sbatch_args': '--mem=80GB'})

@@ -1,47 +1,82 @@
-from __future__ import division, print_function
-from os import path as op
+"""Save 2-D t-SNE scatter plot and array."""
+import os.path as op
+from nipype import Node, Function, IdentityInterface, Workflow
 
-import matplotlib.pyplot as plt
-import nibabel as nib
-import numpy as np
-from sklearn.metrics import pairwise
-from sklearn.manifold import TSNE
-import seaborn as sns
+def make_X_y():
+    """Return arrays X and y to be used in t-SNE. Also return name with which
+    to save t-SNE output."""
+    from os import path as op
+    import nibabel as nib
+    import numpy as np
+    from sklearn.metrics import pairwise
 
-PATH = '/om/user/jakubk/meningioma'
-SAVE_PATH = '/om/user/jakubk/meningioma/tsne_output'
+    subj = 'case_005_2'
 
-# Load original scan and FAST segmentation
-subj = 'case_005_2'
-brain = nib.load(op.join(PATH, 'data/{}.nii.gz'.format(subj)))
-seg = nib.load(op.join(PATH, 'segmentation/fast/brain/classes_4/{}_brain_seg.nii.gz'.format(subj)))
-brain = brain.get_data()
-# Segmentation done by FSL's FAST with 4 classes on an extracted brain (with ANTs).
-seg = seg.get_data()
+    PATH = op.join('om', 'user', 'jakubk', 'meningioma')
+    SAVE_PATH = op.join(PATH, 'tsne_output')
+    save_fname = op.join(SAVE_PATH, "{}_{}_{}".format(subj, perp, l_rate))
 
-slice_ = 127
-b_slice = brain[:, :, slice_]
-s_slice = seg[:, :, slice_]
+    # Load original scan and FAST segmentation
+    brain = nib.load(op.join(PATH, 'data', '{}.nii.gz'.format(subj)))
+    seg = nib.load(op.join(PATH, 'segmentation/fast/brain/classes_4/{}_brain_seg.nii.gz'.format(subj)))
+    brain = brain.get_data()
+    seg = seg.get_data()
 
-# Apply mask to remove skull.
-b_slice_masked = np.ma.masked_array(b_slice, mask=~s_slice.astype(bool))
+    slice_ = 127
+    b_slice = brain[:, :, slice_]
+    s_slice = seg[:, :, slice_]
 
-X = b_slice_masked.flatten().reshape(-1, 1)
-y = b_slice.flatten()
+    b_slice_masked = np.ma.masked_array(b_slice, mask=~s_slice.astype(bool))
+    b_slice_masked = np.ma.filled(b_slice_masked, fill_value=0.)
 
-# Color pallete.
-palette = np.array(['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w'])
+    X = b_slice_masked.flatten().reshape(-1, 1)
+    y = s_slice.flatten().astype(np.int32)
 
-X_sim = pairwise.laplacian_kernel(X)
+    # Similarity matrix. But does Laplacian Kernel return similarity matrix?
+    return pairwise.laplacian_kernel(X), y, save_fname
 
-for l_rate in [500, 750, 1000, 2000]:
-    for perp in [20, 30, 50]:
-        fname = '{}_{}_{}'.format(subj, perp, l_rate)
-        fname = op.join(SAVE_PATH, fname)
-        
-        X_tsne = TSNE(perplexity=perp, learning_rate=l_rate).fit_transform(X_sim)
-        
-        np.save(fname + '.npy', X_tsne)
-        plt.scatter(X_tsne[:, 0], X_tsne[:, 1], c=palette[y.astype(np.int)])
-        plt.title("Subj: {}; Perplexity: {}; L rate: {}".format(subj, perp, l_rate))
-        plt.savefig(fname + '.png')
+
+def run_tsne(X, y, perp, l_rate, fname):
+    """Run t-SNE on X and save 2D scatter plot and t-SNE output."""
+    import numpy as np
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    from sklearn.manifold import TSNE
+    # Run t-SNE. This takes the longest (about 2 hours?)
+    X_tsne = TSNE(perplexity=perp, learning_rate=l_rate, n_iter=5000).fit_transform(X)
+
+    # Make scatter plot.
+    palette = np.array(['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w'])
+    plt.scatter(X_tsne[:, 0], X_tsne[:, 1], c=palette[y.astype(np.int)])
+    plt.title("Subj: {}; Perplexity: {}; L rate: {}".format(subj, perp, l_rate))
+
+    # Save scatter plot.
+    plt.savefig(fname + '.png')
+    # Save t-SNE output array.
+    np.save(fname + '.npy', X_tsne)
+
+
+# Iternode to specify perplexity and learning rate arguments.
+infosource = Node(IdentityInterface(fields=['perp_iter', 'l_rate_iter']),
+                  name='iter_vals')
+infosource.iterables = [('perp_iter', [20, 30, 50]),
+                        ('l_rate_iter', [500, 750, 1000, 1500])]
+
+# Function node to create X and y arrays.
+X_y = Node(Function(input_names=[],
+                    output_names=['X', 'y', 'fname'],
+                    function=make_X_y),
+           name='X_y')
+
+# Function node to run t-SNE and save scatter plot and t-SNE output.
+tsne = Node(Function(input_names=['X', 'y', 'perp', 'l_rate', 'fname'],
+                     output_names=[],
+                     function=run_tsne),
+            name='tsne')
+
+# Create the workflow.
+base_dir = op.join('/', 'om', 'scratch', 'Tue', 'jakub')
+wf = Workflow(name='wf', base_dir=base_dir)
+wf.connect([(infosource, tsne, [('perp_iter', 'perp'), ('l_rate_iter', 'l_rate')]),
+            (X_y, tsne, [('X', 'X'), ('y', 'y'), ('fname', 'fname')])])
+wf.run(plugin='SLURM', plugin_args={'sbatch_args': '--mem=80GB'})

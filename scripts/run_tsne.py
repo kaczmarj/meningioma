@@ -15,6 +15,7 @@ def make_X_y():
     SAVE_PATH = op.join(PATH, 'tsne_output')
 
     # Load original scan and FAST segmentation
+    print("Loading data ...")
     brain = nib.load(op.join(PATH, 'data', '{}.nii.gz'.format(subj)))
     seg = nib.load(op.join(PATH, 'segmentation/fast/brain/classes_4/{}_brain_seg.nii.gz'.format(subj)))
     brain = brain.get_data()
@@ -27,10 +28,12 @@ def make_X_y():
     b_slice_masked = np.ma.masked_array(b_slice, mask=~s_slice.astype(bool))
     b_slice_masked = np.ma.filled(b_slice_masked, fill_value=0.)
 
+    print("Creating arrays X and y ...")
     X = b_slice_masked.flatten().reshape(-1, 1)
     y = s_slice.flatten().astype(np.int32)
 
     # Similarity matrix. But does Laplacian Kernel return similarity matrix?
+    print("Computing similarity matrix ...")
     return pairwise.laplacian_kernel(X), y, subj
 
 
@@ -42,17 +45,22 @@ def run_tsne(X, y, perp, l_rate, subj):
     from sklearn.manifold import TSNE
     fname = op.join(SAVE_PATH, "{}_{}_{}".format(subj, perp, l_rate))
     # Run t-SNE. This takes the longest (about 2 hours?)
+    print("Running t-SNE ...")
     X_tsne = TSNE(perplexity=perp, learning_rate=l_rate, n_iter=5000).fit_transform(X)
 
     # Make scatter plot.
+    print("Creating scatter plot ...")
     palette = np.array(['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w'])
     plt.scatter(X_tsne[:, 0], X_tsne[:, 1], c=palette[y.astype(np.int)])
     plt.title("Subj: {}; Perplexity: {}; L rate: {}".format(subj, perp, l_rate))
 
     # Save scatter plot.
+    print("Saving scatter plot and t-SNE output array ...")
     plt.savefig(fname + '.png')
     # Save t-SNE output array.
     np.save(fname + '.npy', X_tsne)
+
+    print("Finished.")
 
 
 # Iternode to specify perplexity and learning rate arguments.

@@ -4,7 +4,7 @@ from nipype import Node, Function, IdentityInterface, Workflow
 
 imports = ['from os import path as op',
            'import matplotlib.pyplot as plt',
-           'import nibabel as nib',
+           # 'import nibabel as nib',
            'import numpy as np',
            'import seaborn as sns',
            'from sklearn.metrics import pairwise',
@@ -15,34 +15,38 @@ def make_X_y():
     """Return arrays X and y to be used in t-SNE. Also return the subj ID."""
     subj = 'case_005_2'
 
-    PATH = op.join('/', 'om', 'user', 'jakubk', 'meningioma')
-    SAVE_PATH = op.join(PATH, 'tsne_output')
+    PATH = "/om/user/jakubk/meningioma"
 
-    # Load original scan and FAST segmentation
-    print("Loading data ...")
-    brain = nib.load(op.join(PATH, 'data', '{}.nii.gz'.format(subj)))
-    seg = nib.load(op.join(PATH, 'segmentation/fast/brain/classes_4/{}_brain_seg.nii.gz'.format(subj)))
-    brain = brain.get_data()
-    seg = seg.get_data()
-
-    slice_ = 127
-    b_slice = brain[:, :, slice_]
-    s_slice = seg[:, :, slice_]
-
-    b_slice_masked = np.ma.masked_array(b_slice, mask=~s_slice.astype(bool))
-    b_slice_masked = np.ma.filled(b_slice_masked, fill_value=0.)
-
-    print("Creating arrays X and y ...")
-    X = b_slice_masked.flatten().reshape(-1, 1)
-    y = s_slice.flatten().astype(np.int32)
+    # # Load original scan and FAST segmentation
+    # print("Loading data ...")
+    # brain = nib.load(op.join(PATH, 'data', '{}.nii.gz'.format(subj)))
+    # seg = nib.load(op.join(PATH, 'segmentation/fast/brain/classes_4/{}_brain_seg.nii.gz'.format(subj)))
+    # brain = brain.get_data()
+    # seg = seg.get_data()
+    #
+    # slice_ = 127
+    # b_slice = brain[:, :, slice_]
+    # s_slice = seg[:, :, slice_]
+    #
+    # b_slice_masked = np.ma.masked_array(b_slice, mask=~s_slice.astype(bool))
+    # b_slice_masked = np.ma.filled(b_slice_masked, fill_value=0.)
+    #
+    # print("Creating arrays X and y ...")
+    # X = b_slice_masked.flatten().reshape(-1, 1)
+    # y = s_slice.flatten().astype(np.int32)
 
     # Similarity matrix. But does Laplacian Kernel return similarity matrix?
+    X = np.load(op.join(PATH, 'test_data/X_case_052_2_slice127.npy'))
+    y = np.load(op.join(PATH, 'test_data/y_case_052_2_slice127.npy'))
+
     print("Computing similarity matrix ...")
     return pairwise.laplacian_kernel(X), y, subj
 
 
 def run_tsne(X, y, perp, l_rate, subj):
     """Run t-SNE on X and save 2D scatter plot and t-SNE output."""
+    PATH = "/om/user/jakubk/meningioma"
+    SAVE_PATH = op.join(PATH, 'tsne_output')
     fname = op.join(SAVE_PATH, "{}_{}_{}".format(subj, perp, l_rate))
     # Run t-SNE. This takes the longest (about 2 hours?)
     print("Running t-SNE ...")

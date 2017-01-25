@@ -1,15 +1,19 @@
 # Meningioma
 
-How accurately can we detect meningiomas?
+Goals
+-----
+1. To automatically segment meningiomas pre- and post-surgery.
+1. To assess 
 
-Data on [Open Neuroimaging Laboratory](http://openneu.ro/metasearch/)
 
-[Ongoing literature search](/lit_review.md)
+- Data is available on [Open Neuroimaging Laboratory](http://openneu.ro/metasearch/)
+- [Ongoing literature search](/lit_review.md)
 
 
 Table of contents
 -----------------
 1. [Representative slices](#representative-slices)
+1. [Segmentation with slicer](#segmentation-with-slicer)
 1. [ANTs brain extraction](#ants-brain-extraction)
 1. [t-SNE on synthetic brain](#t-sne-on-synthetic-brain)
 
@@ -18,12 +22,35 @@ Representative slices
 ---------------------
 
 
+
+Segmentation with Slicer
+------------------------
+
+An example of semi-automatic segmentation with Slicer's Segmentation Editor module.
+
+<img src='/images/project_week/case_052_2_slicer_seg.png?raw=true', height=400>
+
+
+
 ANTs brain extraction
 ---------------------
+
+We attempted to remove the skull with ANTs `antsBrainExtraction.sh`. Results were mixed. In some cases, the script performed well. In other cases, parts of the brain were removed, or parts of the skull (usually close to the meningioma) remained.
+
+<img src='/images/project_week/case_052_ants_brain.png?raw=true', height=300>
+
+Above: successful brain extraction.
+
+<img src='/images/project_week/case_001_ants_brain_failure.png?raw=true', height=300>
+
+Above: unsuccessful brain extraction.
+
 
 
 t-SNE on synthetic brain
 ------------------------
+
+[[source](/notebooks/dim_reduction.ipynb)]
 
 <table>
   <tr>

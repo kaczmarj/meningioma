@@ -35,3 +35,7 @@ silhouette coefficient (score) gives you sense of whether or not there is a
 good amount of clustering in your outputs.
 
 Clemens: consider a searchlight approach. The meningioma should have less variability than other parts of the brain, so the searchlight could locate part of the tumor, and then region-growing could discover the rest.
+
+number after back-tic is patient ID.
+1-5 pre-op. 6-10 post-op
+T1, T1- contrast, T2, T2-flair, ADC (static image from diffusion-like scan.).

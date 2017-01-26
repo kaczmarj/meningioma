@@ -3,23 +3,19 @@
 Goals
 -----
 1. To automatically segment meningiomas pre- and post-surgery.
-1. To assess 
+1. To assess brain's spatial recovery post-surgery.
 
 
 - Data is available on [Open Neuroimaging Laboratory](http://openneu.ro/metasearch/)
 - [Ongoing literature search](/lit_review.md)
 
 
+
 Table of contents
 -----------------
-1. [Representative slices](#representative-slices)
 1. [Segmentation with slicer](#segmentation-with-slicer)
 1. [ANTs brain extraction](#ants-brain-extraction)
 1. [t-SNE on synthetic brain](#t-sne-on-synthetic-brain)
-
-
-Representative slices
----------------------
 
 
 
@@ -51,6 +47,11 @@ t-SNE on synthetic brain
 ------------------------
 
 [[source](/notebooks/dim_reduction.ipynb)]
+
+- blue == background
+- green == skull
+- red == brain
+- cyan == tumor
 
 <table>
   <tr>

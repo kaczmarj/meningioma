@@ -15,6 +15,7 @@ a is probabilistic atlas (prob of being tumor).
 a sub i is voxel i's probability of being a tumor. This is unknown.
 t sub i is a binary vector of length c indicating whether voxel i is classified
     as tumor in each channel c. Value of 1 indicates tumor is present.
+beta affects smoothness of segmentations. This is the only adjustable arg.
 """
 from __future__ import division, print_function
 import numpy as np
@@ -27,7 +28,7 @@ import numpy as np
 #
 #   p(k sub i = k) = pi sub ki.
 def normal_state():
-    """"""
+    """Multinomial distribution for a voxel's tissue label."""
     pass
 
 

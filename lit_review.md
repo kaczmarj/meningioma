@@ -1,6 +1,16 @@
 # Literature review
 
+
+## Meningioma segmentation problem
+
+
+
+
+
+## General tumor segmentation problem
+
 1. Multimodal Brain Tumor Segmentation Challenge (BraTS)
+  - Attempt to segment gliomas (more difficult than meningiomas).
   - Analysis of many segmentation methods (many are automatic)
   - [BraTS website](http://braintumorsegmentation.org/)
   - Training and testing data available [here](https://www.smir.ch/BRATS/Start2015) (registration required).

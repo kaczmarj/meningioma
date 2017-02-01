@@ -20,9 +20,7 @@ datasource.inputs.template_args = {'t1c': [['subject_id']]}
 datasource.inputs.sort_filelist = True
 datasource.inputs.subject_id = subjects
 
-seg = Node(ants.BrainExtraction(), name='seg',
-           iterables=['anatomical_image', 'out_prefix'], itersource=datasource,
-           synchronize=True)
+seg = Node(ants.BrainExtraction(), name='seg', synchronize=True)
 seg.inputs.dimension = 3
 seg.inputs.keep_temporary_files = 1
 seg.inputs.brain_template = op.join(template_dir, 'T_template0.nii.gz')

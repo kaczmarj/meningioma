@@ -36,8 +36,8 @@ sinker.inputs.base_directory = op.abspath('antsBrainExtraction_output')
 
 # Workflow.
 wf = Workflow(name='antsBrainExtraction', base_dir='/om/scratch/Wed/jakubk')
-wf.connect(grab, 't1c', seg, 'anatomical_image')
-wf.connect(grab, 'subject_id', seg, 'out_prefix')
+wf.connect(datasource, 't1c', seg, 'anatomical_image')
+wf.connect(datasource, 'subject_id', seg, 'out_prefix')
 wf.connect(seg, 'BrainExtractionBrain', sinker, 'brain')
 wf.connect(seg, 'BrainExtractionMask', sinker, 'brain_masks')
 wf.connect(seg, 'BrainExtractionSegmentation', sinker, 'seg_full')

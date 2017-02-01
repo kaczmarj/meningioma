@@ -1,7 +1,42 @@
 # Literature review
 
 
+## Existing software
+
+1. [ITK-SNAP]()
+1. [3D Slicer]()
+1. [MICCAI Example 1](https://github.com/naldeborgh7575/brain_segmentation)
+1. [dcemriS4](https://github.com/bjw34032/dcemriS4) (R package)
+1. [BraTumIA](http://www.istb.unibe.ch/research/medical_image_analysis/software/index_eng.html)
+1. [CAD workstation](http://ieeexplore.ieee.org/xpls/icp.jsp?arnumber=7208489)
+1. [Matlab example 2D](https://github.com/Deepak1194/Brain-tumor-Segmentation)
+1. [CRKIT](http://crl.med.harvard.edu/software/CRKIT/index.php)
+
+
 ## Meningioma segmentation problem
+
+1. A 3D Interactive Multi-object Segmentation Tool using Local Robust Statistics Driven Active Contours (Gao et al., 2012)
+  - Semi-automatic
+  - Method
+    - Compare 3D Slicer, ITK-SNAP, and manual segmentation.
+
+1. Segmentation of meningiomas and low grade gliomas in MRI (Kaus et al., 1999)
+  - Automatic (but user selects sample points for each tissue class).
+  - Method
+    - Based on 'Adaptive Template moderated Classification'.
+    - Segments tissue into skin, brain, ventricles, and tumor (i.e., meningioma or low-grade glioma).
+    - Iterating over segmentation by (1) statistical classification and (2) registration.
+    - Used k-Nearest Neighbors.
+  - Results
+    - Comparable to manual segmentation.
+
+
+1. Automatic Brain Tumor Segmentation by Subject Specific Modification of Atlas Priors (Prastawa et al., 2003)
+  - Automatic
+  - Method
+    - .
+  - Results
+    - .
 
 
 1. Automated segmentation of MR images of brain tumors (Kaus et al., 2001)
@@ -11,12 +46,13 @@
   - Results
     - .
 
+
 1. Automatic segmentation of meningioma from non-contrasted brain MRI integrating fuzzy clustering and region growing (Hsieh et al., 2011)
   - Automatic
   - Method
-    - .
+    - Used fuzzy-c clustering, then region growing, and some knowledge-based information.
   - Results
-    - .
+    - Performance was comparable to previous automatic segmentation techniques.
 
 
 
@@ -70,13 +106,6 @@
   - Method
   - Notes
      - Segmented ventricles and basal ganglia in presence of meningioma. This could be useful for assessing improvement post-surgery.
-
-
-1. Segmentation of meningiomas and low grade gliomas in MRI (Kaus et al., 1999)
-  - Automatic
-  - Method
-    - Iterating over segmentation by (1) statistical classification and (2) registration.
-    - Used k-Nearest Neighbors.
 
 
 1. Multi-modal glioblastoma segmentation: man versus machine (Porz et al., 2014)

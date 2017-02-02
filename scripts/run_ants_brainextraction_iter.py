@@ -8,11 +8,10 @@ from nipype.interfaces import ants
 data_dir = '/om/user/jakubk/meningioma/data'
 template_dir = '/om/user/jakubk/meningioma/ants_templates/OASIS-30_Atropos_template'
 
-subjects = [op.split(path)[-1][:10] for path in glob('../data/*.nii.gz')]
+subjects = [op.split(path)[-1][:10] for path in glob('data/*.nii.gz')]
 
-datasource = Node(DataGrabber(infields=['subject_id'],
-                              outfields=['subject_id', 't1c']),
-                 name='datasource')
+datasource = Node(DataGrabber(outfields=['subject_id', 't1c']),
+                              name='datasource')
 datasource.inputs.base_directory = data_dir
 datasource.inputs.template = '*'
 datasource.inputs.field_template = {'t1c': '%s*.nii.gz'}

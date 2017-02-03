@@ -11,6 +11,8 @@
 1. [CAD workstation](http://ieeexplore.ieee.org/xpls/icp.jsp?arnumber=7208489)
 1. [Matlab example 2D](https://github.com/Deepak1194/Brain-tumor-Segmentation)
 1. [CRKIT](http://crl.med.harvard.edu/software/CRKIT/index.php)
+1. [AutoSeg](https://www.nitrc.org/projects/autoseg/)
+
 
 
 ## Meningioma segmentation problem
@@ -34,7 +36,11 @@
 1. Automatic Brain Tumor Segmentation by Subject Specific Modification of Atlas Priors (Prastawa et al., 2003)
   - Automatic
   - Method
-    - .
+    - Used healthy priors and tumor priors.
+      - Co-registered T1, T1-contrast, and T2 to common space, then registered those to ICBM brain atlas.
+      - Subtracted T1 from T1 contrast. (Model histograms?)
+      - Created prior probability map for tumor using the histogram model?
+      - .
   - Results
     - .
 
@@ -116,3 +122,21 @@
 
 1. Brain tumor segmentation with deep neural networks (Havaei et al., 2016)
   - .
+
+
+## Related reading
+
+1. [Expectation maximization slideshow](http://nmr.mgh.harvard.edu/~koen/Miccai2003Tutorial_VanLeemput.pdf)
+  - [Tutorial paper](http://www.cs.huji.ac.il/~yweiss/emTutorial.pdf)
+  - [EM in Python](https://people.duke.edu/~ccc14/sta-663/EMAlgorithm.html)
+  - Intensity distributions of different tissue classes are modeled as normal distributions.
+  - Gaussian mixture model: if the mean and variance of each tissue type is known, voxels can be classified based on their intensity.
+  - Expectation maximization algorithm:
+    - "If the tissue labels were known, parameter estimation would straightforward. EM algorithm iteratively fills in [tissue labels] and updates the parameters accordingly."
+    - Expectation step:
+      - Classify the voxels based on current parameter estimation.
+    - Maximization step:
+      - Re-estimate the parameters based on current classification.
+    - Iterate over E and M steps.
+  - The E step of the EM algorithm can take into account prior probability maps. Introduces geometrical constraints. Atlas is used to initialize the EM algorithm.
+  - MR field inhomogeneity is also known as bias field. EM algorithm can take this into account.

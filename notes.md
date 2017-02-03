@@ -19,6 +19,17 @@ Look into
   1. scikit-learn
 
 
+Read
+----
+[MIT EM tutorial](http://www.cs.huji.ac.il/~yweiss/emTutorial.pdf)
+[EM coin toss](http://ai.stanford.edu/~chuongdo/papers/em_tutorial.pdf)
+[EM slideshow](http://nmr.mgh.harvard.edu/~koen/Miccai2003Tutorial_VanLeemput.pdf)
+[EM Python implementation](https://people.duke.edu/~ccc14/sta-663/EMAlgorithm.html)
+[Python stats implementations](http://python-for-signal-processing.blogspot.com/2012/11/expectation-maximization-expectation.html)
+
+
+
+
 Notes
 -----
 

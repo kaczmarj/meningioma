@@ -5,18 +5,26 @@ Goals
 1. To automatically segment meningiomas pre- and post-surgery.
 1. To assess brain's spatial recovery post-surgery.
 
-
-- Data is available on [Open Neuroimaging Laboratory](http://openneu.ro/metasearch/)
+- Data is available on [Brainbox](http://brainbox.pasteur.fr/project/meningioma)
 - [Ongoing literature search](/lit_review.md)
-
 
 
 Table of contents
 -----------------
+1. [Ground truth segmentation](#ground-truth-segmentation)
 1. [Segmentation with slicer](#segmentation-with-slicer)
 1. [ANTs brain extraction](#ants-brain-extraction)
 1. [t-SNE on synthetic brain](#t-sne-on-synthetic-brain)
 
+
+Ground truth segmentation
+-------------------------
+
+| case | segmented | reviewed |
+|:----:|:---------:|:--------:|
+| [001](http://brainbox.pasteur.fr/mri/?url=https://dl.dropbox.com/sh/71jbelduefu41xs/AADysls57HwmJT0pdbbSVI4Na/case_001_2.nii.gz) | &#10004; | |
+| [002](http://brainbox.pasteur.fr/mri/?url=https://dl.dropbox.com/sh/71jbelduefu41xs/AAAx8y8Mp_jh0yad1CjD2Z4Ra/case_002_2.nii.gz) | &#10004; | |
+| [003](http://brainbox.pasteur.fr/mri/?url=https://dl.dropbox.com/sh/71jbelduefu41xs/AABhDQJ-GQKMzHdFDGN6MrFBa/case_003_2.nii.gz) | &#10004; | |
 
 
 Segmentation with Slicer
